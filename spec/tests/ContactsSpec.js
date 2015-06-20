@@ -3,8 +3,9 @@ describe("Contacts Test Suite", function(){
 
 	//var request = require('request');
 	var request = require('C:/Program Files/nodejs/node_modules/npm/node_modules/request')
-	var base_url = "http://mycontactsvc.com:3000";
+	var base_url = "http://localhost:3000";
 	var contacts_url = base_url + "/contacts";
+	var idCreated;
 
 	describe("hello world", function(){
 
@@ -22,8 +23,7 @@ describe("Contacts Test Suite", function(){
 	});
 
 	describe("create update contact", function(){
-		var idCreated;
-
+	    //var idCreated;
 		it("should create contact",function(done){
 
 			var contact = new Object();
@@ -78,24 +78,40 @@ describe("Contacts Test Suite", function(){
 							done();
 					    });
 		});
+     
 	});
 
 	//TODO: Fill out the test case below that posts a message to a contact
 	// and retrieves it back.
-	describe("post and get message to contact", function(){
+	describe("post and get message to contact", function () {
+	    var contact = new Object();
+	    it("should post message to contact", function (done) {
+	        //TODO: Write your test case here.
+	        //var contact = new Object();
+	        contact.message = "hello this is LK";
+	        request.put({ url: contacts_url + "/message/" + idCreated, body: contact, json: true },
+                function (error, response, body) {
+                    console.log(response.statusCode);
+                    console.log(body.message);
+                    expect(response.statusCode).toBe(200);
+                    expect(body.message).toBe("hello this is LK");
+                    done();
+                });
+	    });
 
-		it("should post message to contact", function(done){
-			//TODO: Write your test case here.
-			done();
+	    it("should get message for contact", function (done) {
+	        //TODO: Write your test case here.
+	        request.get({url: contacts_url+"/message/"+idCreated, body : contact,json:true},
+            function (error, response, body) {
 
-		});
+	            expect(response.statusCode).toBe(200);
+	            expect(body).toBe("hello this is LK");
 
-		it("should get message for contact", function(done){
-			//TODO: Write your test case here.
-			done();
+	            done();
 
-		});
+	        });
 
+	    });
 	});
 
 });
